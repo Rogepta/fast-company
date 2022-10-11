@@ -15,7 +15,7 @@ const User = ({user, onRemove}) => {
                         <td>{user.rate}</td>
                         <td>
                             <button onClick={() => onRemove(user._id)}
-                            className={`btn btn-primary`}
+                            className={`badge bg-danger`}
                             >DELETE</button>
                         </td>
                     </tr> 

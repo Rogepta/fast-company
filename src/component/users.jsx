@@ -27,7 +27,7 @@ const Users = () => {
 
   return (
     <>
-      <header className="badge bg-danger">
+      <header className="badge bg-primary">
         {renderHeaderNumber(lengthOfUsers)}
       </header>
       <table className="table">
