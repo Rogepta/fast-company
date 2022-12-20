@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import api from "../api";
 import User from "./user";
+import Table from "./renderTable";
+import SearchStatus from "./searchStatus";
 import plural from "plural-ru";
 
 const Users = () => {
@@ -25,28 +27,38 @@ const Users = () => {
     }
   };
 
+  const toggleBookMark = (userId) => {
+    const newUsers = users.map((user) => {
+      if (user._id === userId) return { ...user, bookmark: !user.bookmark };
+      else {
+        return user;
+      }
+    });
+    setUsers(newUsers);
+  };
+
   return (
     <>
-      <header className="badge bg-primary">
-        {renderHeaderNumber(lengthOfUsers)}
-      </header>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Имя</th>
-            <th>Качества</th>
-            <th>Профессия</th>
-            <th>Встретился, раз</th>
-            <th>Оценка</th>
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <User key={user._id} user={user} onRemove={removeHandler} />
-          ))}
-        </tbody>
-      </table>
+      <SearchStatus
+        users={users}
+        onRender={renderHeaderNumber}
+        length={lengthOfUsers}
+      />
+      {users.length > 0 && (
+        <table className="table">
+          <Table />
+          <tbody>
+            {users.map((user) => (
+              <User
+                key={user._id}
+                user={user}
+                onRemove={removeHandler}
+                onToggleBookMark={toggleBookMark}
+              />
+            ))}
+          </tbody>
+        </table>
+      )}
     </>
   );
 };
