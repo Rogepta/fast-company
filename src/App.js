@@ -4,11 +4,11 @@ import Users from "./component/users";
 import "bootstrap/dist/css/bootstrap.css";
 
 const App = () => {
-  return (
-    <>
-      <Users />
-    </>
-  );
+    return (
+        <>
+            <Users />
+        </>
+    );
 };
 
 export default App;
