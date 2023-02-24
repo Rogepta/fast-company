@@ -1,6 +1,6 @@
 import React from "react";
-import "./index.css";
-import Users from "./component/users";
+import "../index.css";
+import Users from "../app/component/users";
 import "bootstrap/dist/css/bootstrap.css";
 
 const App = () => {
