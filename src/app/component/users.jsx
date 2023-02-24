@@ -8,14 +8,17 @@ import Pagination from "./pagination";
 import { paginate } from "../utils/paginate";
 import PropTypes from "prop-types";
 import GroupList from "./groupList";
+import _ from "lodash";
 
 const Users = () => {
     const [users, setUsers] = useState(() => api.users.fetchAll());
-    const lengthOfUsers = users.length;
-    const pageSize = 2;
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
     const [selectedProf, setSelectedProf] = useState();
+    const [sortBy, setSortBy] = useState({ iter: "name", order: "asc" });
+    const pageSize = 8;
+    const lengthOfUsers = users.length;
+
     useEffect(() => {
         api.professions.fetchAll().then((data) => setProfession(data));
     }, []);
@@ -29,6 +32,17 @@ const Users = () => {
 
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
+    };
+
+    const handleSort = (item) => {
+        if (sortBy.iter === item) {
+            setSortBy((prevState) => ({
+                ...prevState,
+                order: prevState.order === "asc" ? "desc" : "asc"
+            }));
+        } else {
+            setSortBy({ iter: item, order: "asc" });
+        }
     };
 
     const removeHandler = (userId) => {
@@ -69,7 +83,11 @@ const Users = () => {
         ? users.filter((user) => user.profession === selectedProf)
         : users;
     const count = filteredUsers.length;
-    const userCrop = paginate(filteredUsers, currentPage, pageSize);
+
+    const sortedUsers = _.orderBy(filteredUsers, [sortBy.iter], [sortBy.order]);
+
+    const userCrop = paginate(sortedUsers, currentPage, pageSize);
+
     const clearFilter = () => {
         setSelectedProf();
     };
@@ -101,7 +119,7 @@ const Users = () => {
                 />
                 {count > 0 && (
                     <table className="table">
-                        <Table />
+                        <Table onSort={handleSort} />
                         <tbody>
                             {userCrop.map((user) => (
                                 <User
